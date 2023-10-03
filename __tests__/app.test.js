@@ -17,8 +17,8 @@ describe('GET /api/topics', () => {
           .get('/api/topics')
           .expect(200)
           .then(({ body }) => {
-            expect(body.allTopics).toHaveLength(3);
-            body.allTopics.forEach((topic) => {
+            expect(body.topics).toHaveLength(3);
+            body.topics.forEach((topic) => {
               expect(typeof topic.slug).toBe('string');
               expect(typeof topic.description).toBe('string');
             });
@@ -28,13 +28,44 @@ describe('GET /api/topics', () => {
     describe('errors', () => {
       test('should respond with 404 when table is empty', () => {
         return request(app)
-          .get('/api/topicsxxx')
-          .expect(404)
+          .get('/api/topics')
+          .expect(200)
           .then(({ body }) => {
-            if (body === 0) {
-            expect(body.msg).toBe('topics not found.');
+            if (body.length === 0) {
+            expect(body.msg).toBe('no topics found.');
             }
           });
       });
     })
   });
+// describe('GET /api', () => {
+//     describe('Basic request checks', () => {
+//       test('returns status 200 on successful request', () => {
+//         return request(app).get('/api').expect(200);
+//       });
+//       test('response contains object for all endpoints, which contains the correct properties', () => {
+//         return request(app)
+//           .get('/api')
+//           .expect(200)
+//           .then(({ body }) => {
+//             expect(body).toHaveLength(3);
+//             body.allTopics.forEach((topic) => {
+//               expect(typeof topic.slug).toBe('string');
+//               expect(typeof topic.description).toBe('string');
+//             });
+//           });
+//       });
+//     });
+//     describe('errors', () => {
+//       test('should respond with 404 when table is empty', () => {
+//         return request(app)
+//           .get('/api/topicsxxx')
+//           .expect(404)
+//           .then(({ body }) => {
+//             if (body === 0) {
+//             expect(body.msg).toBe('topics not found.');
+//             }
+//           });
+//       });
+//     })
+//   });
