@@ -7,11 +7,9 @@ exports.handleCustomErrors = (err, req, res, next) => {
 
 exports.handlePsqlErrors = (err, req, res, next) => {
     console.log('PSQL err>>>>>>', err)
-  if (err.code === '23502') {
-    res.status(400).send({ msg: 'Bad request' });
-  } else if(err.code === '22P02') {
-    res.status(404).send({ msg: 'team does not exist' });
-  } else next(err);
+  // if (err.code === '23502') {
+  //   res.status(400).send({ msg: 'Bad request' });
+  // }
 };
 
 exports.handleServerErrors = (err, req, res, next) => {

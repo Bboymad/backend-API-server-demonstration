@@ -1,11 +1,10 @@
-const {getAllEndpoints } = require('../models/model.topics');
+const { getAllEndpoints } = require('../models/model.endpoints')
 
 exports.getEndpoints = (req, res, next) => {
-    const params = req.params
-      getAllEndpoints(req.params)
+      getAllEndpoints()
         .then((allEndpoints) => {
-          console.log(allEndpoints)
-          res.status(200).send({ allEndpoints });
+          res.json(allEndpoints);
         })
-        .catch(next);
+        .catch((err) => 
+        next(err))
     };
