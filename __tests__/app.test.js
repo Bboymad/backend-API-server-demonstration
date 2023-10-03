@@ -18,22 +18,33 @@ describe('GET /api/topics', () => {
           .expect(200)
           .then(({ body }) => {
             expect(body.topics).toHaveLength(3);
-            body.topics.forEach((topic) => {
-              expect(typeof topic.slug).toBe('string');
-              expect(typeof topic.description).toBe('string');
-            });
+            expect(body.topics).toEqual(
+              expect.objectContaining([
+                {
+                  description: 'The man, the Mitch, the legend',
+                  slug: 'mitch'
+                },
+                {
+                  description: 'Not dogs',
+                  slug: 'cats'
+                },
+                {
+                  description: 'what books are made of',
+                  slug: 'paper'
+                }
+              ]))
           });
       });
     });
     describe('errors', () => {
-      test('should respond with 404 when table is empty', () => {
+      test('should respond with 404 when table doesn\'t exist due to invalid endpoint', () => {
         return request(app)
-          .get('/api/topics')
-          .expect(200)
+          .get('/api/topicsxxx')
+          .expect(404)
           .then(({ body }) => {
-            if (body.length === 0) {
-            expect(body.msg).toBe('no topics found.');
-            }
+            expect(body).toEqual({});
+
+
           });
       });
     })
