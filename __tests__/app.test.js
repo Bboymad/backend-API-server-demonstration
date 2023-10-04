@@ -61,7 +61,7 @@ describe('GET /api', () => {
       });
     })
 })
-describe.only('GET /api/articles/:article_id', () => {
+describe('GET /api/articles/:article_id', () => {
   describe('Basic request checks', () => {
     test('returns status 200 on successful request', () => {
       return request(app).get('/api/articles/1').expect(200);
