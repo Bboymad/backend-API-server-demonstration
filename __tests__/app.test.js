@@ -61,46 +61,38 @@ describe('GET /api', () => {
       });
     })
 })
-// describe('GET /api/articles/:article_id', () => {
-//   describe('Basic request checks', () => {
-//     test('returns status 200 on successful request', () => {
-//       return request(app).get('/api/articles/:article_id').expect(200);
-//     });
-//     test('response contains an object of 1 article', () => {
-//       return request(app)
-//       .get('/api/topics')
-//       .expect(200)
-//       .then(({ body }) => {
-//         expect(body.topics).toHaveLength(3);
-//         expect(body.topics).toEqual(
-//         expect.objectContaining([
-//           {
-//             description: 'The man, the Mitch, the legend',
-//             slug: 'mitch'
-//           },
-//           {
-//             description: 'Not dogs',
-//             slug: 'cats'
-//           },
-//           {
-//           description: 'what books are made of',
-//           slug: 'paper'
-//           }
-//         ]))
-//       });
-//     });
-//     test('response object contains the correct properties')
-//   });
-//   describe('errors', () => {
-//         test('should respond with 404 when table doesn\'t exist due to invalid endpoint', () => {
-//           return request(app)
-//             .get('/api/topicsxxx')
-//             .expect(404)
-//             .then(({ body }) => {
-//               expect(body).toEqual({});
+describe('GET /api/articles/:article_id', () => {
+  describe('Basic request checks', () => {
+    test('returns status 200 on successful request', () => {
+      return request(app).get('/api/articles/1').expect(200);
+    });
+    test('response contains an object of 1 article with correct properties', () => {
+      return request(app)
+      .get('/api/articles/1')
+      .then(({ body }) => {
+        expect(body.article).toEqual({
+          article_id: 1,
+          title: 'Living in the shadow of a great man',
+          topic: 'mitch',
+          author: 'butter_bridge',
+          body: 'I find this existence challenging',
+          created_at: '2020-07-09T20:11:00.000Z',
+          votes: 100,
+          article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+        })
+      });
+    });
+  });
+  describe('errors', () => {
+        test('should respond with 404 when article is not found', () => {
+          return request(app)
+            .get('/api/articles/99999999')
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).toEqual({ msg: 'Article not found' });
   
   
-//             });
-//         });
-//   })
-// });
+            });
+        });
+  })
+});
