@@ -19,6 +19,8 @@ app.get('/api', getEndpoints)
 
 app.get('/api/articles/:article_id', getArticleId)
 
+// app.get('/api/articles', getAllArticles)
+
 app.all("*", invalidEndpoint)
 
 app.use(handleCustomErrors);
