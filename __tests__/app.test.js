@@ -147,4 +147,58 @@ describe('GET /api/articles', () => {
         });
       })  
     })
+});
+describe('GET /api/articles/:article_id/comments', () => {
+  describe('Basic request checks', () => {
+    test('returns status 200 on successful request', () => {
+        return request(app).get('/api/articles/1/comments').expect(200);
+    });
+    test('responds with an array of comment objects for a given article id, each with expected properties', () => {
+      return request(app)
+        .get('/api/articles/1/comments')
+        .then(({ body }) => {
+          const expectedProperties = [
+            'comment_id',
+            'votes',
+            'created_at',
+            'author',
+            'body',
+            'article_id'
+            ];
+          body.comments.forEach((comment) => {
+            expectedProperties.forEach(property => {
+              expect(comment).toHaveProperty(property);
+          });
+        });
+      });
+    });
+    test('should return the comments sorted by date descending (most recent first)', () => {
+      return request(app)
+      .get('/api/articles/1/comments')
+      .then(({ body }) => {
+        expect(body.comments).toBeSortedBy('created_at', {
+          descending: true
+        })
+      });
+    });
   });
+  describe('Errors', () => {
+    test('should respond with 404 when article id endpoint is valid but not found', () => {
+      return request(app)
+        .get('/api/articles/99999999/comments')
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({ msg: 'Article not found' });
+        });
+    });    
+    test('should respond with 400 when invalid endpoint is used', () => {
+      return request(app)
+      .get('/api/articles/not_an_id/comments')
+      .expect(400)
+      .then(({ body }) => {
+      expect(body).toEqual({ msg: "Bad request" });
+      });
+    });
+  });
+});
+  
