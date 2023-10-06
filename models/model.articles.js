@@ -39,3 +39,30 @@ exports.formatArticles = () => {
         return rows
       })
 }
+
+exports.getComments = (id) => {
+  return db.query(
+    `SELECT
+      comment_id,
+      votes,
+      created_at,
+      author,
+      body,
+      article_id
+    FROM
+      comments
+    WHERE
+      article_id = $1
+    ORDER BY
+      created_at DESC;`, [id])
+  .then(({ rows }) => {
+    const comments = rows
+    if (comments.length === 0) {
+      return Promise.reject({
+        status: 404,
+        msg: 'Article not found'
+      });
+    }
+    return comments
+  });
+}

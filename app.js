@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const { getTopics } = require('./controllers/controller.topics')
 const { getEndpoints } = require('./controllers/controller.endpoints');
-const { getArticleId, getAllArticles } = require('./controllers/controller.articles')
+const { getArticleId, getAllArticles, getCommentsById } = require('./controllers/controller.articles')
 
 const {
   invalidEndpoint,
@@ -18,6 +18,8 @@ app.get('/api', getEndpoints)
 app.get('/api/articles/:article_id', getArticleId)
 
 app.get('/api/articles', getAllArticles)
+
+app.get('/api/articles/:article_id/comments', getCommentsById)
 
 app.all("*", invalidEndpoint)
 
